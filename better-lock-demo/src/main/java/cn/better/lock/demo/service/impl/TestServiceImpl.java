@@ -1,6 +1,7 @@
 package cn.better.lock.demo.service.impl;
 
 import cn.better.lock.core.annotation.GlobalSynchronized;
+import cn.better.lock.core.model.LockParam;
 import cn.better.lock.core.properties.BetterLockProperties;
 import cn.better.lock.demo.model.Response;
 import cn.better.lock.demo.service.TestService;
@@ -20,8 +21,8 @@ public class TestServiceImpl implements TestService {
     private BetterLockProperties betterLockProperties;
 
     @Override
-    @GlobalSynchronized("lock")
-    public Response<String> testRequest(String param) {
+    @GlobalSynchronized(lockKey = "lock:test:%s", customValueKey = "testKey")
+    public Response<String> testRequest(LockParam<String, String> param) {
         long startTimestamp = System.currentTimeMillis();
 
         try {
@@ -34,6 +35,6 @@ public class TestServiceImpl implements TestService {
 
         log.info("{} Start: {} End: {}, Started {} use {}s", betterLockProperties.getLockType(), new Date(startTimestamp), new Date(endTimestamp), param, (endTimestamp - startTimestamp)/1000);
 
-        return Response.buildResult(param);
+        return Response.buildResult(param.get("testKey"));
     }
 }

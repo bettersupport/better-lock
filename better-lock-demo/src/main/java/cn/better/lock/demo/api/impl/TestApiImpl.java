@@ -1,5 +1,6 @@
 package cn.better.lock.demo.api.impl;
 
+import cn.better.lock.core.model.LockParam;
 import cn.better.lock.demo.api.TestApi;
 import cn.better.lock.demo.model.Response;
 import cn.better.lock.demo.service.TestService;
@@ -13,7 +14,7 @@ public class TestApiImpl implements TestApi {
     private TestService testService;
 
     @Override
-    public Response<String> testRequest(String param) {
+    public Response<String> testRequest(LockParam<String, String> param) {
         return testService.testRequest(param);
     }
 }
