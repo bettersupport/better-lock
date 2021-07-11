@@ -1,0 +1,8 @@
+spring:
+  profiles:
+    active: dev
+  application:
+    name: better-lock-demo
+
+logging:
+  config: classpath:logback-boot.xml
