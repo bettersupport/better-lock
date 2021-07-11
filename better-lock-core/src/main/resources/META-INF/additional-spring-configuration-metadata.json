@@ -1,0 +1,34 @@
+{
+  "groups": [
+    {
+      "name": "spring.better.lock",
+      "type": "cn.better.lock.core.properties.BetterLockProperties",
+      "sourceType": "cn.better.lock.core.properties.BetterLockProperties",
+      "description": "lock properties."
+    }
+  ],
+  "properties": [
+    {
+      "name": "spring.better.lock.lock-type",
+      "type": "java.lang.String",
+      "sourceType": "cn.better.lock.core.properties.BetterLockProperties",
+      "defaultValue": "redis",
+      "description": "lock achieve type."
+    }
+  ],
+  "hints": [
+    {
+      "name": "spring.better.lock.lock-type",
+      "values": [
+        {
+          "value": "redis",
+          "description": "redis achieve."
+        },
+        {
+          "value": "zookeeper",
+          "description": "zookeeper achieve."
+        }
+      ]
+    }
+  ]
+}

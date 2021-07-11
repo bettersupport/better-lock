@@ -9,7 +9,7 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>better-lock-demo</artifactId>
+    <artifactId>better-lock-core</artifactId>
 
     <properties>
         <maven.compiler.source>${jdk.version}</maven.compiler.source>
@@ -19,20 +19,12 @@
     <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-web</artifactId>
+            <artifactId>spring-boot-configuration-processor</artifactId>
+            <optional>true</optional>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-data-redis</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.google.guava</groupId>
-            <artifactId>guava</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>${project.groupId}</groupId>
-            <artifactId>better-lock-core</artifactId>
-            <version>${project.version}</version>
+            <artifactId>spring-boot</artifactId>
         </dependency>
     </dependencies>
 

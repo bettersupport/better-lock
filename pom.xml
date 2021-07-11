@@ -11,6 +11,7 @@
 
     <modules>
         <module>better-lock-demo</module>
+        <module>better-lock-core</module>
     </modules>
 
     <properties>
