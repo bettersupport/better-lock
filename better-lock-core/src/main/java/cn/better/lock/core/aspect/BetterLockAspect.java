@@ -42,22 +42,40 @@ public class BetterLockAspect {
                 }
             }
 
-            Method method = joinPoint.getTarget().getClass().getMethod(joinPoint.getSignature().getName(), argTypes);
+            Class methodClass = joinPoint.getTarget().getClass();
+
+            Method method = methodClass.getMethod(joinPoint.getSignature().getName(), argTypes);
 
             GlobalSynchronized globalSynchronized = method.getAnnotation(GlobalSynchronized.class);
             if (globalSynchronized == null) {
                 throw new GlobalLockException("解析注解出现错误，注解为空。");
             }
 
-            String customValue;
-            String customValueKey = globalSynchronized.customValueKey();
-            if (StringUtils.isBlank(customValueKey)) {
-                customValue = "";
-            } else {
-                customValue = (String) param.get(customValueKey);
-            }
+            // 获取分布式锁主键
+            String lockKey;
 
-            String lockKey = String.format(globalSynchronized.lockKey(), customValue);
+            if (StringUtils.isBlank(globalSynchronized.lockKey())) {
+                String classNameLockKey = methodClass.getName().replaceAll("\\.", ":");
+                lockKey = "betterLock:" + classNameLockKey + ":" + method.getName();
+            } else {
+                lockKey = globalSynchronized.lockKey();
+
+                // 获取锁主键自定义值
+                String customValue;
+                String customValueKey = globalSynchronized.customValueKey();
+                if (StringUtils.isBlank(customValueKey)) {
+                    customValue = "";
+                } else {
+                    Object customValueObject = param.get(customValueKey);
+                    if (customValueObject == null) {
+                        customValue = "";
+                    } else {
+                        customValue = customValueObject.toString();
+                    }
+                }
+
+                lockKey = String.format(lockKey, customValue);
+            }
 
             log.info("lockMethod lockType {}", lockKey);
 

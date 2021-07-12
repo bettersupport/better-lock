@@ -15,6 +15,7 @@ public class TestApiImpl implements TestApi {
 
     @Override
     public Response<String> testRequest(LockParam<String, String> param) {
+        param.set("testKey", "4568453123132598sadasd12as1da5sd");
         return testService.testRequest(param);
     }
 }

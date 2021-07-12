@@ -19,4 +19,8 @@ public class LockParam<K,V> extends HashMap<K,V> {
     public LockParam(Map<? extends K, ? extends V> m) {
         super(m);
     }
+
+    public V set(K key, V value) {
+        return put(key, value);
+    }
 }
