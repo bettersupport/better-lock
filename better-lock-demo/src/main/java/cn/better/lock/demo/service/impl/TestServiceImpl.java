@@ -25,12 +25,6 @@ public class TestServiceImpl implements TestService {
     public Response<String> testRequest(LockParam<String, String> param) {
         long startTimestamp = System.currentTimeMillis();
 
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            log.error("", Throwables.getStackTraceAsString(e));
-        }
-
         long endTimestamp = System.currentTimeMillis();
 
         log.info("{} Start: {} End: {}, Started {} use {}s", betterLockProperties.getLockType(), new Date(startTimestamp), new Date(endTimestamp), param, (endTimestamp - startTimestamp)/1000);
