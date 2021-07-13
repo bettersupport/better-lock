@@ -2,8 +2,12 @@ package cn.better.lock.core.aspect;
 
 import cn.better.lock.core.annotation.GlobalSynchronized;
 import cn.better.lock.core.exception.GlobalLockException;
+import cn.better.lock.core.model.LockAttribute;
 import cn.better.lock.core.model.LockParam;
 import cn.better.lock.core.properties.BetterLockProperties;
+import cn.better.lock.core.support.LockInterface;
+import cn.better.lock.core.support.LockerConfig;
+import cn.better.lock.core.support.LockerFactory;
 import org.apache.commons.lang3.StringUtils;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.After;
@@ -12,6 +16,7 @@ import org.aspectj.lang.annotation.Before;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Component;
 
 import java.lang.reflect.Method;
@@ -23,27 +28,37 @@ public class BetterLockAspect {
 
     @Autowired
     private BetterLockProperties lockProperties;
+    @Autowired
+    private StringRedisTemplate redisTemplate;
 
     @Before("@annotation(cn.better.lock.core.annotation.GlobalSynchronized)")
     public void lockMethod(JoinPoint joinPoint) throws GlobalLockException {
 
-        String lockKey = getLockKeyByAnnotation(joinPoint);
+        LockAttribute lockAttribute = getLockKeyByAnnotation(joinPoint);
 
-        log.info("lockMethod lockType {}", lockKey);
+        LockInterface locker = LockerFactory.getLocker(lockProperties.getLockType(),
+                LockerConfig.build().buildRedisConfig(redisTemplate));
+        locker.lock(lockAttribute.getLockKey(), lockAttribute.getTimeOut());
+
+        log.info("lockMethod lockType {}", lockAttribute.getLockKey());
 
     }
 
     @After("@annotation(cn.better.lock.core.annotation.GlobalSynchronized)")
     public void unlockMethod(JoinPoint joinPoint) throws GlobalLockException {
 
-        String lockKey = getLockKeyByAnnotation(joinPoint);
+        LockAttribute lockAttribute = getLockKeyByAnnotation(joinPoint);
 
-        log.info("unlockMethod lockType {}", lockKey);
+        LockInterface locker = LockerFactory.getLocker(lockProperties.getLockType(),
+                LockerConfig.build().buildRedisConfig(redisTemplate));
+        locker.unlock(lockAttribute.getLockKey());
+
+        log.info("unlockMethod lockType {}", lockAttribute.getLockKey());
 
     }
 
 
-    private String getLockKeyByAnnotation(JoinPoint joinPoint) throws GlobalLockException {
+    private LockAttribute getLockKeyByAnnotation(JoinPoint joinPoint) throws GlobalLockException {
 
         Class methodClass = joinPoint.getTarget().getClass();
         Object[] args = joinPoint.getArgs();
@@ -97,7 +112,13 @@ public class BetterLockAspect {
             lockKey = String.format(lockKey, customValue);
         }
 
-        return lockKey;
+        LockAttribute lockAttribute = new LockAttribute();
+
+        lockAttribute.setGlobalSynchronized(globalSynchronized);
+        lockAttribute.setLockKey(lockKey);
+        lockAttribute.setTimeOut(globalSynchronized.timeOut());
+
+        return lockAttribute;
 
     }
 

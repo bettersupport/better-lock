@@ -15,7 +15,7 @@ public class BetterLockProperties {
         this.lockType = lockType;
     }
 
-    private static class LockType {
+    public static class LockType {
         public static final String REDIS_LOCK = "redis";
         public static final String ZOOKEEPER_LOCK = "zookeeper";
     }
