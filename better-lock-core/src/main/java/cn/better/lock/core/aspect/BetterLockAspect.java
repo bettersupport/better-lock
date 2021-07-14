@@ -26,6 +26,8 @@ import java.lang.reflect.Method;
 public class BetterLockAspect {
     private static final Logger log = LoggerFactory.getLogger(BetterLockAspect.class);
 
+    public static ThreadLocal<LockAttribute> lockAttributeThreadLocal = new ThreadLocal<>();
+
     @Autowired
     private BetterLockProperties lockProperties;
     @Autowired
@@ -36,24 +38,32 @@ public class BetterLockAspect {
 
         LockAttribute lockAttribute = getLockKeyByAnnotation(joinPoint);
 
+        lockAttributeThreadLocal.set(lockAttribute);
+
         LockInterface locker = LockerFactory.getLocker(lockProperties.getLockType(),
                 LockerConfig.build().buildRedisConfig(redisTemplate));
         locker.lock(lockAttribute.getLockKey(), lockAttribute.getTimeOut());
 
-        log.info("lockMethod lockType {}", lockAttribute.getLockKey());
+        log.debug("lockMethod lockType {}, lockKey {}", lockProperties.getLockType(), lockAttribute.getLockKey());
 
     }
 
     @After("@annotation(cn.better.lock.core.annotation.GlobalSynchronized)")
     public void unlockMethod(JoinPoint joinPoint) throws GlobalLockException {
 
-        LockAttribute lockAttribute = getLockKeyByAnnotation(joinPoint);
+        LockAttribute lockAttribute = lockAttributeThreadLocal.get();
+
+        if (lockAttribute == null) {
+            throw new GlobalLockException("ThreadLocal 不存在锁属性");
+        }
+        // 释放ThreadLocal
+        lockAttributeThreadLocal.set(null);
 
         LockInterface locker = LockerFactory.getLocker(lockProperties.getLockType(),
                 LockerConfig.build().buildRedisConfig(redisTemplate));
         locker.unlock(lockAttribute.getLockKey());
 
-        log.info("unlockMethod lockType {}", lockAttribute.getLockKey());
+        log.debug("unlockMethod lockType {}, lockKey {}", lockProperties.getLockType(), lockAttribute.getLockKey());
 
     }
 

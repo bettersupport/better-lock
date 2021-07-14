@@ -17,18 +17,34 @@ import java.util.Date;
 public class TestServiceImpl implements TestService {
     private static final Logger log = LoggerFactory.getLogger(TestServiceImpl.class);
 
-    @Autowired
-    private BetterLockProperties betterLockProperties;
 
     @Override
-    @GlobalSynchronized(lockKey = "lock:test:%s", customValueKey = "testKey")
+    @GlobalSynchronized(lockKey = "lock:test", timeOut = 10000L)
     public Response<String> testRequest(LockParam<String, String> param) {
+        long startTimestamp = System.currentTimeMillis();
+
+        try {
+            Thread.sleep(5000L);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        long endTimestamp = System.currentTimeMillis();
+
+        log.info("Start: {} End: {}, Started use {}s", new Date(startTimestamp), new Date(endTimestamp), (endTimestamp - startTimestamp)/1000);
+
+        return Response.buildResult("success");
+    }
+
+    @Override
+    @GlobalSynchronized(lockKey = "lock:test", timeOut = 10000L)
+    public Response<String> testRequest2(LockParam<String, String> param) {
         long startTimestamp = System.currentTimeMillis();
 
         long endTimestamp = System.currentTimeMillis();
 
-        log.info("{} Start: {} End: {}, Started {} use {}s", betterLockProperties.getLockType(), new Date(startTimestamp), new Date(endTimestamp), param, (endTimestamp - startTimestamp)/1000);
+        log.info("Start: {} End: {}, Started use {}s", new Date(startTimestamp), new Date(endTimestamp), (endTimestamp - startTimestamp)/1000);
 
-        return Response.buildResult(param.get("testKey"));
+        return Response.buildResult("success");
     }
 }

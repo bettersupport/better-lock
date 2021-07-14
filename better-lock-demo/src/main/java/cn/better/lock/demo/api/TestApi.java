@@ -12,4 +12,7 @@ public interface TestApi {
     @RequestMapping(value = "testRequest", method = RequestMethod.POST)
     Response<String> testRequest(@RequestBody LockParam<String, String> param);
 
+    @RequestMapping(value = "testRequest2", method = RequestMethod.POST)
+    Response<String> testRequest2(@RequestBody LockParam<String, String> param);
+
 }

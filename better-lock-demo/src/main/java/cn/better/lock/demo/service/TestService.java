@@ -7,4 +7,6 @@ public interface TestService {
 
     Response<String> testRequest(LockParam<String, String> param);
 
+    Response<String> testRequest2(LockParam<String, String> param);
+
 }
