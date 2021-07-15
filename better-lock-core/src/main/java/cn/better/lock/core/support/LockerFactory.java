@@ -1,7 +1,6 @@
 package cn.better.lock.core.support;
 
 import cn.better.lock.core.properties.BetterLockProperties;
-import org.springframework.data.redis.core.StringRedisTemplate;
 
 public class LockerFactory {
 
