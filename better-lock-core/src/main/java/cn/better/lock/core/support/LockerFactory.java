@@ -8,7 +8,7 @@ public class LockerFactory {
     public static LockInterface getLocker(String lockType, LockerConfig lockerConfig) {
         if (BetterLockProperties.LockType.REDIS_LOCK.equals(lockType)) {
             return new RedisLocker(lockerConfig.getRedisTemplate());
-        } else if (BetterLockProperties.LockType.REDIS_LOCK.equals(lockType)) {
+        } else if (BetterLockProperties.LockType.ZOOKEEPER_LOCK.equals(lockType)) {
             return null;
         } else {
             return null;
