@@ -50,7 +50,7 @@ public class RedisLocker implements LockInterface{
     }
 
     private boolean lock(String key, String value, long expire) {
-        if (redisTemplate.opsForValue().setIfAbsent(key, value, expire, TimeUnit.SECONDS)) {
+        if (redisTemplate.opsForValue().setIfAbsent(key, value, expire, TimeUnit.MILLISECONDS)) {
             return true;
         }
 
