@@ -5,6 +5,8 @@ import java.util.Map;
 
 public class LockParam<K,V> extends HashMap<K,V> {
 
+    public static final String lockResultKey = "lockResult";
+
     public LockParam(int initialCapacity, float loadFactor) {
         super(initialCapacity, loadFactor);
     }
@@ -22,5 +24,9 @@ public class LockParam<K,V> extends HashMap<K,V> {
 
     public V set(K key, V value) {
         return put(key, value);
+    }
+
+    public V getLockResult() {
+        return this.get(lockResultKey);
     }
 }

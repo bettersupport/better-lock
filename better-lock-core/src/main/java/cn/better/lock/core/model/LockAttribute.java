@@ -6,6 +6,8 @@ public class LockAttribute {
 
     private GlobalSynchronized globalSynchronized;
 
+    private LockParam param;
+
     private String lockKey;
 
     private long timeOut;
@@ -16,6 +18,14 @@ public class LockAttribute {
 
     public void setGlobalSynchronized(GlobalSynchronized globalSynchronized) {
         this.globalSynchronized = globalSynchronized;
+    }
+
+    public LockParam getParam() {
+        return param;
+    }
+
+    public void setParam(LockParam param) {
+        this.param = param;
     }
 
     public String getLockKey() {

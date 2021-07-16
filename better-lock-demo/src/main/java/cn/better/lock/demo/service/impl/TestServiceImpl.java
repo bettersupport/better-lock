@@ -20,7 +20,7 @@ public class TestServiceImpl implements TestService {
 
     @Override
     @GlobalSynchronized(lockKey = "lock:test", timeOut = 10000L)
-    public Response<String> testRequest(LockParam<String, String> param) {
+    public Response<String> testRequest(LockParam<String, Object> param) {
         long startTimestamp = System.currentTimeMillis();
 
         try {
@@ -31,19 +31,19 @@ public class TestServiceImpl implements TestService {
 
         long endTimestamp = System.currentTimeMillis();
 
-        log.info("Start: {} End: {}, Started use {}s", new Date(startTimestamp), new Date(endTimestamp), (endTimestamp - startTimestamp)/1000);
+        log.info("testRequest: Start: {} End: {}, param {},Started use {}s", new Date(startTimestamp), new Date(endTimestamp), param.get("lockResult"), (endTimestamp - startTimestamp)/1000);
 
         return Response.buildResult("success");
     }
 
     @Override
-    @GlobalSynchronized(lockKey = "lock:test", timeOut = 10000L)
-    public Response<String> testRequest2(LockParam<String, String> param) {
+    @GlobalSynchronized(lockKey = "lock:test", timeOut = 10000L, lockWait = false)
+    public Response<String> testRequest2(LockParam<String, Object> param) {
         long startTimestamp = System.currentTimeMillis();
 
         long endTimestamp = System.currentTimeMillis();
 
-        log.info("Start: {} End: {}, Started use {}s", new Date(startTimestamp), new Date(endTimestamp), (endTimestamp - startTimestamp)/1000);
+        log.info("testRequest2: Start: {} End: {}, param {},Started use {}s", new Date(startTimestamp), new Date(endTimestamp), param.getLockResult(), (endTimestamp - startTimestamp)/1000);
 
         return Response.buildResult("success");
     }

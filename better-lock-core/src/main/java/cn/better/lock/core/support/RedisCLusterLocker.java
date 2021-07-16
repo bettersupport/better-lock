@@ -2,7 +2,7 @@ package cn.better.lock.core.support;
 
 import cn.better.lock.core.exception.GlobalLockException;
 
-public class ZooKeeperLocker implements LockInterface{
+public class RedisCLusterLocker implements LockInterface{
     @Override
     public void lock(String lockKey, long timeOut) throws GlobalLockException {
 

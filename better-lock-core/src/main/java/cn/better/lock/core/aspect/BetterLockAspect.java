@@ -42,7 +42,15 @@ public class BetterLockAspect {
 
         LockInterface locker = LockerFactory.getLocker(lockProperties.getLockType(),
                 LockerConfig.build().buildRedisConfig(redisTemplate));
-        locker.lock(lockAttribute.getLockKey(), lockAttribute.getTimeOut());
+        if (lockAttribute.getGlobalSynchronized().lockWait()) {
+            locker.lock(lockAttribute.getLockKey(), lockAttribute.getTimeOut());
+        } else {
+            boolean lockResult = locker.lockWithoutWait(lockAttribute.getLockKey(), lockAttribute.getTimeOut());
+            if (null == lockAttribute.getParam()) {
+                throw new GlobalLockException("LockParam 参数不能为空");
+            }
+            lockAttribute.getParam().set(LockParam.lockResultKey, lockResult);
+        }
 
         log.debug("lockMethod lockType {}, lockKey {}", lockProperties.getLockType(), lockAttribute.getLockKey());
 
@@ -97,13 +105,13 @@ public class BetterLockAspect {
         }
 
         // 获取分布式锁主键
-        String lockKey;
+        String lockKey = "betterLock:";
 
         if (StringUtils.isBlank(globalSynchronized.lockKey())) {
             String classNameLockKey = methodClass.getName().replaceAll("\\.", ":");
-            lockKey = "betterLock:" + classNameLockKey + ":" + method.getName();
+            lockKey += classNameLockKey + ":" + method.getName();
         } else {
-            lockKey = globalSynchronized.lockKey();
+            lockKey += globalSynchronized.lockKey();
 
             // 获取锁主键自定义值
             String customValue;
@@ -125,6 +133,7 @@ public class BetterLockAspect {
         LockAttribute lockAttribute = new LockAttribute();
 
         lockAttribute.setGlobalSynchronized(globalSynchronized);
+        lockAttribute.setParam(param);
         lockAttribute.setLockKey(lockKey);
         lockAttribute.setTimeOut(globalSynchronized.timeOut());
 

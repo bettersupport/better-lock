@@ -35,4 +35,10 @@ public @interface GlobalSynchronized {
      */
     long timeOut() default 5000L;
 
+    /**
+     * 是否等待锁
+     * @return
+     */
+    boolean lockWait() default true;
+
 }
