@@ -1,10 +1,13 @@
 package cn.better.lock.core.model;
 
 import cn.better.lock.core.annotation.GlobalSynchronized;
+import cn.better.lock.core.support.LockInterface;
 
 public class LockAttribute {
 
     private GlobalSynchronized globalSynchronized;
+
+    private LockInterface locker;
 
     private LockParam param;
 
@@ -18,6 +21,14 @@ public class LockAttribute {
 
     public void setGlobalSynchronized(GlobalSynchronized globalSynchronized) {
         this.globalSynchronized = globalSynchronized;
+    }
+
+    public LockInterface getLocker() {
+        return locker;
+    }
+
+    public void setLocker(LockInterface locker) {
+        this.locker = locker;
     }
 
     public LockParam getParam() {

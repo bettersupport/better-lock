@@ -13,6 +13,7 @@ import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.After;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
+import org.redisson.api.RedissonClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,16 +33,22 @@ public class BetterLockAspect {
     private BetterLockProperties lockProperties;
     @Autowired
     private StringRedisTemplate redisTemplate;
+    @Autowired(required = false)
+    private RedissonClient redissonClient;
 
     @Before("@annotation(cn.better.lock.core.annotation.GlobalSynchronized)")
     public void lockMethod(JoinPoint joinPoint) throws GlobalLockException {
 
         LockAttribute lockAttribute = getLockKeyByAnnotation(joinPoint);
 
-        lockAttributeThreadLocal.set(lockAttribute);
-
         LockInterface locker = LockerFactory.getLocker(lockProperties.getLockType(),
-                LockerConfig.build().buildRedisConfig(redisTemplate));
+                LockerConfig
+                        .build()
+                        .buildRedisConfig(redisTemplate)
+                        .buildRedisClusterConfig(redissonClient));
+        lockAttribute.setLocker(locker);
+
+        lockAttributeThreadLocal.set(lockAttribute);
         if (lockAttribute.getGlobalSynchronized().lockWait()) {
             locker.lock(lockAttribute.getLockKey(), lockAttribute.getTimeOut());
         } else {
@@ -64,11 +71,11 @@ public class BetterLockAspect {
         if (lockAttribute == null) {
             throw new GlobalLockException("ThreadLocal 不存在锁属性");
         }
+        LockInterface locker = lockAttribute.getLocker();
+
         // 释放ThreadLocal
         lockAttributeThreadLocal.set(null);
 
-        LockInterface locker = LockerFactory.getLocker(lockProperties.getLockType(),
-                LockerConfig.build().buildRedisConfig(redisTemplate));
         locker.unlock(lockAttribute.getLockKey());
 
         log.debug("unlockMethod lockType {}, lockKey {}", lockProperties.getLockType(), lockAttribute.getLockKey());

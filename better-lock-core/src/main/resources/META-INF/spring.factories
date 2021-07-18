@@ -1,2 +1,3 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-  cn.better.lock.core.config.BetterLockAutoConfiguration
+  cn.better.lock.core.configuration.BetterLockAutoConfiguration,\
+  cn.better.lock.core.configuration.RedissonAutoConfiguration

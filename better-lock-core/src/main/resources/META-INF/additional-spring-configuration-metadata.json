@@ -27,6 +27,10 @@
         {
           "value": "zookeeper",
           "description": "zookeeper achieve."
+        },
+        {
+          "value": "redisCluster",
+          "description": "redisCluster achieve."
         }
       ]
     }

@@ -8,7 +8,7 @@ import java.util.concurrent.TimeUnit;
 
 public class RedisLocker implements LockInterface{
 
-    public static ThreadLocal<String> lockValueThreadLocal = new ThreadLocal<>();
+    private static ThreadLocal<String> lockValueThreadLocal = new ThreadLocal<>();
 
     private StringRedisTemplate redisTemplate;
 

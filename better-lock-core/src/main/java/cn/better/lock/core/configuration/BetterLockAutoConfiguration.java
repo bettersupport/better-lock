@@ -1,4 +1,4 @@
-package cn.better.lock.core.config;
+package cn.better.lock.core.configuration;
 
 import cn.better.lock.core.properties.BetterLockProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;

@@ -7,8 +7,9 @@ spring:
       max-file-size: 20MB
       max-request-size: 20MB
   redis:
-    host: 127.0.0.1
-    port: 6379
+    cluster:
+      nodes: 127.0.0.1:7000,127.0.0.1:7001,127.0.0.1:7002,127.0.0.1:7003,127.0.0.1:7004,127.0.0.1:7005
+      max-redirects: 3  # 重定向的最大次数
     jedis:
       pool:
         max-idle: 500
