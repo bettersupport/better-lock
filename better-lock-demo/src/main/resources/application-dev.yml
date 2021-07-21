@@ -17,4 +17,4 @@ spring:
         max-active: 2000
   better:
     lock:
-      lock-type: redis
+      lock-type: redisCluster

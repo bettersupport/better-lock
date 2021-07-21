@@ -18,6 +18,9 @@ import org.springframework.context.annotation.Primary;
 @ConditionalOnProperty(prefix = "spring.better.lock", name = "lock-type", havingValue = BetterLockProperties.LockType.REDIS_CLUSTER_LOCK)
 public class RedissonAutoConfiguration {
 
+    private static final String REDIS_SSL_PREFIX = "rediss://";
+    private static final String REDIS_PREFIX = "redis://";
+
     @Autowired
     private RedisProperties redisProperties;
 
@@ -25,20 +28,22 @@ public class RedissonAutoConfiguration {
     @ConditionalOnProperty(prefix = "spring.redis.cluster", name = "nodes")
     public RedissonClient redissonCluster() {
         Config config = new Config();
-        config.setTransportMode(TransportMode.EPOLL);
+        config.setTransportMode(TransportMode.NIO);
+        String redisPrefix = redisProperties.isSsl() ? REDIS_SSL_PREFIX : REDIS_PREFIX;
         for (String node : redisProperties.getCluster().getNodes()) {
-            config.useClusterServers().addNodeAddress(node);
+            config.useClusterServers().addNodeAddress(redisPrefix + node);
         }
         return Redisson.create(config);
     }
 
     @Bean
-    @ConditionalOnProperty(prefix = "spring.redis.cluster", name = "sentinel")
+    @ConditionalOnProperty(prefix = "spring.redis.sentinel", name = "nodes")
     public RedissonClient redissonSentinel() {
         Config config = new Config();
-        config.setTransportMode(TransportMode.EPOLL);
+        config.setTransportMode(TransportMode.NIO);
+        String redisPrefix = redisProperties.isSsl() ? REDIS_SSL_PREFIX : REDIS_PREFIX;
         for (String node : redisProperties.getSentinel().getNodes()) {
-            config.useSentinelServers().addSentinelAddress(node);
+            config.useSentinelServers().addSentinelAddress(redisPrefix + node);
         }
         return Redisson.create(config);
     }
