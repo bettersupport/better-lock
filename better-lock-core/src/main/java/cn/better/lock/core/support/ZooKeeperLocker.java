@@ -18,8 +18,4 @@ public class ZooKeeperLocker implements LockInterface{
 
     }
 
-    @Override
-    public void unlockMost(String lockKey) throws GlobalLockException {
-
-    }
 }

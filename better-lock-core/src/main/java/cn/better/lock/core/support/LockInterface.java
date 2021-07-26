@@ -10,6 +10,4 @@ public interface LockInterface {
 
     void unlock(String lockKey) throws GlobalLockException;
 
-    void unlockMost(String lockKey) throws GlobalLockException;
-
 }

@@ -38,8 +38,4 @@ public class RedisCLusterLocker implements LockInterface{
         }
     }
 
-    @Override
-    public void unlockMost(String lockKey) throws GlobalLockException {
-
-    }
 }

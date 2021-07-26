@@ -54,18 +54,6 @@ public class RedisLocker implements LockInterface{
         }
     }
 
-    @Override
-    public void unlockMost(String lockKey) throws GlobalLockException {
-        try {
-            String currentValue = redisTemplate.opsForValue().get(lockKey);
-            if (!StringUtils.isEmpty(currentValue)) {
-                redisTemplate.opsForValue().getOperations().delete(lockKey);//删除key
-            }
-        } catch (Exception e) {
-            throw new GlobalLockException(e);
-        }
-    }
-
     private boolean lock(String key, String value, long expire) {
         if (redisTemplate.opsForValue().setIfAbsent(key, value, expire, TimeUnit.MILLISECONDS)) {
             return true;
