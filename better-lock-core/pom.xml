@@ -11,11 +11,6 @@
 
     <artifactId>better-lock-core</artifactId>
 
-    <properties>
-        <maven.compiler.source>${jdk.version}</maven.compiler.source>
-        <maven.compiler.target>${jdk.version}</maven.compiler.target>
-    </properties>
-
     <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>
