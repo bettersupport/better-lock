@@ -7,9 +7,12 @@ spring:
       max-file-size: 20MB
       max-request-size: 20MB
   redis:
-    cluster:
-      nodes: 127.0.0.1:7000,127.0.0.1:7001,127.0.0.1:7002,127.0.0.1:7003,127.0.0.1:7004,127.0.0.1:7005
-      max-redirects: 3  # 重定向的最大次数
+#    cluster:
+#      nodes: 127.0.0.1:7000,127.0.0.1:7001,127.0.0.1:7002,127.0.0.1:7003,127.0.0.1:7004,127.0.0.1:7005
+#      max-redirects: 3  # 重定向的最大次数
+    sentinel:
+      master: mymaster
+      nodes: 127.0.0.1:16379,127.0.0.1:16380,127.0.0.1:16381
     jedis:
       pool:
         max-idle: 500

@@ -41,6 +41,7 @@ public class RedissonAutoConfiguration {
     public RedissonClient redissonSentinel() {
         Config config = new Config();
         config.setTransportMode(TransportMode.NIO);
+        config.useSentinelServers().setMasterName(redisProperties.getSentinel().getMaster());
         String redisPrefix = redisProperties.isSsl() ? REDIS_SSL_PREFIX : REDIS_PREFIX;
         for (String node : redisProperties.getSentinel().getNodes()) {
             config.useSentinelServers().addSentinelAddress(redisPrefix + node);

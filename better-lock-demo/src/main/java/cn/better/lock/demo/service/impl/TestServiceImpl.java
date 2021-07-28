@@ -24,7 +24,7 @@ public class TestServiceImpl implements TestService {
         long startTimestamp = System.currentTimeMillis();
 
         try {
-            Thread.sleep(11000L);
+            Thread.sleep(5000L);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -37,7 +37,7 @@ public class TestServiceImpl implements TestService {
     }
 
     @Override
-    @GlobalSynchronized(lockKey = "lock:test", timeOut = 10000L, lockWait = false)
+    @GlobalSynchronized(lockKey = "lock:test", timeOut = 10000L)
     public Response<String> testRequest2(LockParam<String, Object> param) {
         long startTimestamp = System.currentTimeMillis();
 
