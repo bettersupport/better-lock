@@ -25,10 +25,24 @@ public class RedissonAutoConfiguration {
     private RedisProperties redisProperties;
 
     @Bean
+    @ConditionalOnProperty(prefix = "spring.redis", name = "host")
+    public RedissonClient redissonSingle() {
+        Config config = new Config();
+        config.setTransportMode(TransportMode.NIO);
+        config.useSingleServer().setDatabase(redisProperties.getDatabase());
+        config.useSingleServer().setPassword(redisProperties.getPassword());
+        config.useSingleServer().setConnectionMinimumIdleSize(redisProperties.getJedis().getPool().getMinIdle());
+        String redisPrefix = redisProperties.isSsl() ? REDIS_SSL_PREFIX : REDIS_PREFIX;
+        config.useSingleServer().setAddress(redisPrefix + redisProperties.getHost() + ":" + redisProperties.getPort());
+        return Redisson.create(config);
+    }
+
+    @Bean
     @ConditionalOnProperty(prefix = "spring.redis.cluster", name = "nodes")
     public RedissonClient redissonCluster() {
         Config config = new Config();
         config.setTransportMode(TransportMode.NIO);
+        config.useClusterServers().setPassword(redisProperties.getPassword());
         String redisPrefix = redisProperties.isSsl() ? REDIS_SSL_PREFIX : REDIS_PREFIX;
         for (String node : redisProperties.getCluster().getNodes()) {
             config.useClusterServers().addNodeAddress(redisPrefix + node);
@@ -41,7 +55,10 @@ public class RedissonAutoConfiguration {
     public RedissonClient redissonSentinel() {
         Config config = new Config();
         config.setTransportMode(TransportMode.NIO);
+        config.useSentinelServers().setDatabase(redisProperties.getDatabase());
+        config.useSentinelServers().setPassword(redisProperties.getPassword());
         config.useSentinelServers().setMasterName(redisProperties.getSentinel().getMaster());
+        config.useSentinelServers().setSentinelPassword(redisProperties.getSentinel().getPassword());
         String redisPrefix = redisProperties.isSsl() ? REDIS_SSL_PREFIX : REDIS_PREFIX;
         for (String node : redisProperties.getSentinel().getNodes()) {
             config.useSentinelServers().addSentinelAddress(redisPrefix + node);
