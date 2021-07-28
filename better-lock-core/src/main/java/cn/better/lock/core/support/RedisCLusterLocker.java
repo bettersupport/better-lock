@@ -33,6 +33,7 @@ public class RedisCLusterLocker implements LockInterface{
     @Override
     public void unlock(String lockKey) throws GlobalLockException {
         RLock rlock = rLockThreadLocal.get();
+        rLockThreadLocal.set(null);
         if (rlock.isLocked() && rlock.isHeldByCurrentThread()) {
             rlock.unlock();
         }
