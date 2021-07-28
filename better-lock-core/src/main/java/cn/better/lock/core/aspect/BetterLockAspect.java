@@ -45,7 +45,8 @@ public class BetterLockAspect {
                 LockerConfig
                         .build()
                         .buildRedisConfig(redisTemplate)
-                        .buildRedisClusterConfig(redissonClient));
+                        .buildRedisClusterConfig(redissonClient)
+                        .buildProperties(lockProperties));
         lockAttribute.setLocker(locker);
 
         lockAttributeThreadLocal.set(lockAttribute);

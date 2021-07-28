@@ -19,19 +19,19 @@ public class TestServiceImpl implements TestService {
 
 
     @Override
-    @GlobalSynchronized(lockKey = "lock:test", timeOut = 10000L)
+    @GlobalSynchronized(lockKey = "lock:test", timeOut = 1000L)
     public Response<String> testRequest(LockParam<String, Object> param) {
         long startTimestamp = System.currentTimeMillis();
 
         try {
-            Thread.sleep(5000L);
+            Thread.sleep(990L);
         } catch (Exception e) {
             e.printStackTrace();
         }
 
         long endTimestamp = System.currentTimeMillis();
 
-        log.info("testRequest: Start: {} End: {}, param {},Started use {}s", new Date(startTimestamp), new Date(endTimestamp), param.get("lockResult"), (endTimestamp - startTimestamp)/1000);
+        log.info("testRequest: Start: {} End: {}, param {},Started use {}ms", new Date(startTimestamp), new Date(endTimestamp), param.get("lockResult"), (endTimestamp - startTimestamp));
 
         return Response.buildResult("success");
     }

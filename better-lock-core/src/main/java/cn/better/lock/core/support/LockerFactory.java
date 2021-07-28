@@ -10,7 +10,7 @@ public class LockerFactory {
         } else if (BetterLockProperties.LockType.REDIS_CLUSTER_LOCK.equals(lockType)) {
             return new RedisCLusterLocker(lockerConfig.getRedissonClient());
         } else if (BetterLockProperties.LockType.ZOOKEEPER_LOCK.equals(lockType)) {
-            return new ZooKeeperLocker();
+            return new ZooKeeperLocker(lockerConfig.getBetterLockProperties());
         } else {
             return null;
         }

@@ -1,9 +1,12 @@
 package cn.better.lock.core.support;
 
+import cn.better.lock.core.properties.BetterLockProperties;
 import org.redisson.api.RedissonClient;
 import org.springframework.data.redis.core.StringRedisTemplate;
 
 public class LockerConfig {
+
+    private BetterLockProperties betterLockProperties;
 
     private StringRedisTemplate redisTemplate;
 
@@ -25,6 +28,14 @@ public class LockerConfig {
         this.redissonClient = redissonClient;
     }
 
+    public BetterLockProperties getBetterLockProperties() {
+        return betterLockProperties;
+    }
+
+    public void setBetterLockProperties(BetterLockProperties betterLockProperties) {
+        this.betterLockProperties = betterLockProperties;
+    }
+
     public static LockerConfig build() {
         LockerConfig lockerConfig = new LockerConfig();
         return lockerConfig;
@@ -37,6 +48,11 @@ public class LockerConfig {
 
     public LockerConfig buildRedisClusterConfig(RedissonClient redissonClient) {
         this.setRedissonClient(redissonClient);
+        return this;
+    }
+
+    public LockerConfig buildProperties(BetterLockProperties properties) {
+        this.setBetterLockProperties(properties);
         return this;
     }
 }

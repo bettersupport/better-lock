@@ -20,4 +20,6 @@ spring:
         max-active: 2000
   better:
     lock:
-      lock-type: redisCluster
+      lock-type: zookeeper
+      zookeeper:
+        nodes: 127.0.0.1:2181,127.0.0.1:2182
