@@ -18,24 +18,41 @@ public class RedisCLusterLocker implements LockInterface{
 
     @Override
     public void lock(String lockKey, long timeOut) throws GlobalLockException {
-        RLock rlock = redissonClient.getLock(lockKey);
-        rLockThreadLocal.set(rlock);
-        rlock.lock(timeOut, TimeUnit.MILLISECONDS);
+        try {
+            RLock rlock = redissonClient.getLock(lockKey);
+            rLockThreadLocal.set(rlock);
+            rlock.lock(timeOut, TimeUnit.MILLISECONDS);
+        } catch (Exception e) {
+            throw new GlobalLockException(e);
+        }
+
     }
 
     @Override
     public boolean lockWithoutWait(String lockKey, long timeOut) throws GlobalLockException {
-        RLock rlock = redissonClient.getLock(lockKey);
-        rLockThreadLocal.set(rlock);
-        return rlock.tryLock();
+        try {
+            RLock rlock = redissonClient.getLock(lockKey);
+            rLockThreadLocal.set(rlock);
+            return rlock.tryLock();
+        } catch (Exception e) {
+            throw new GlobalLockException(e);
+        }
     }
 
     @Override
     public void unlock(String lockKey) throws GlobalLockException {
-        RLock rlock = rLockThreadLocal.get();
-        rLockThreadLocal.set(null);
-        if (rlock.isLocked() && rlock.isHeldByCurrentThread()) {
-            rlock.unlock();
+        try {
+            RLock rlock = rLockThreadLocal.get();
+            rLockThreadLocal.set(null);
+            if (rlock.isLocked() && rlock.isHeldByCurrentThread()) {
+                try {
+                    rlock.unlock();
+                } catch (IllegalMonitorStateException e) {
+                    e.printStackTrace();
+                }
+            }
+        } catch (Exception e) {
+            throw new GlobalLockException(e);
         }
     }
 
