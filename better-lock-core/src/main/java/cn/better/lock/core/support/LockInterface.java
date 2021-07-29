@@ -4,6 +4,9 @@ import cn.better.lock.core.exception.GlobalLockException;
 
 public interface LockInterface {
 
+    String lockKeyPrefix = "betterLock";
+    String lockKeyColon = ":";
+
     void lock(String lockKey, long timeOut) throws GlobalLockException;
 
     boolean lockWithoutWait(String lockKey, long timeOut) throws GlobalLockException;

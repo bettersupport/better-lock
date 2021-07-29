@@ -17,7 +17,7 @@
     },
     {
       "name": "spring.better.lock.zookeeper.nodes",
-      "type": "java.util.List<java.lang.String>",
+      "type": "java.lang.String",
       "sourceType": "cn.better.lock.core.properties.BetterLockProperties",
       "defaultValue": "127.0.0.1:2181",
       "description": "zookeeper nodes."

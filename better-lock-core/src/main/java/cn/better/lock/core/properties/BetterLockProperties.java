@@ -34,13 +34,13 @@ public class BetterLockProperties {
     }
 
     public static class Zookeeper {
-        private List<String> nodes;
+        private String nodes;
 
-        public List<String> getNodes() {
+        public String getNodes() {
             return nodes;
         }
 
-        public void setNodes(List<String> nodes) {
+        public void setNodes(String nodes) {
             this.nodes = nodes;
         }
     }

@@ -1,16 +1,17 @@
 package cn.better.lock.core.support;
 
+import cn.better.lock.core.model.ZookeeperClient;
 import cn.better.lock.core.properties.BetterLockProperties;
 import org.redisson.api.RedissonClient;
 import org.springframework.data.redis.core.StringRedisTemplate;
 
 public class LockerConfig {
 
-    private BetterLockProperties betterLockProperties;
-
     private StringRedisTemplate redisTemplate;
 
     private RedissonClient redissonClient;
+
+    private ZookeeperClient zookeeperClient;
 
     public StringRedisTemplate getRedisTemplate() {
         return redisTemplate;
@@ -28,12 +29,12 @@ public class LockerConfig {
         this.redissonClient = redissonClient;
     }
 
-    public BetterLockProperties getBetterLockProperties() {
-        return betterLockProperties;
+    public ZookeeperClient getZookeeperClient() {
+        return zookeeperClient;
     }
 
-    public void setBetterLockProperties(BetterLockProperties betterLockProperties) {
-        this.betterLockProperties = betterLockProperties;
+    public void setZookeeperClient(ZookeeperClient zookeeperClient) {
+        this.zookeeperClient = zookeeperClient;
     }
 
     public static LockerConfig build() {
@@ -51,8 +52,8 @@ public class LockerConfig {
         return this;
     }
 
-    public LockerConfig buildProperties(BetterLockProperties properties) {
-        this.setBetterLockProperties(properties);
+    public LockerConfig buildZookeeperClient(ZookeeperClient zookeeperClient) {
+        this.setZookeeperClient(zookeeperClient);
         return this;
     }
 }

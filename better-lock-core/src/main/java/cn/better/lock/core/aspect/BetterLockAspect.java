@@ -4,6 +4,7 @@ import cn.better.lock.core.annotation.GlobalSynchronized;
 import cn.better.lock.core.exception.GlobalLockException;
 import cn.better.lock.core.model.LockAttribute;
 import cn.better.lock.core.model.LockParam;
+import cn.better.lock.core.model.ZookeeperClient;
 import cn.better.lock.core.properties.BetterLockProperties;
 import cn.better.lock.core.support.LockInterface;
 import cn.better.lock.core.support.LockerConfig;
@@ -31,10 +32,12 @@ public class BetterLockAspect {
 
     @Autowired
     private BetterLockProperties lockProperties;
-    @Autowired
+    @Autowired(required = false)
     private StringRedisTemplate redisTemplate;
     @Autowired(required = false)
     private RedissonClient redissonClient;
+    @Autowired(required = false)
+    private ZookeeperClient zookeeperClient;
 
     @Before("@annotation(cn.better.lock.core.annotation.GlobalSynchronized)")
     public void lockMethod(JoinPoint joinPoint) throws GlobalLockException {
@@ -46,7 +49,7 @@ public class BetterLockAspect {
                         .build()
                         .buildRedisConfig(redisTemplate)
                         .buildRedisClusterConfig(redissonClient)
-                        .buildProperties(lockProperties));
+                        .buildZookeeperClient(zookeeperClient));
         lockAttribute.setLocker(locker);
 
         lockAttributeThreadLocal.set(lockAttribute);
@@ -113,11 +116,11 @@ public class BetterLockAspect {
         }
 
         // 获取分布式锁主键
-        String lockKey = "betterLock:";
+        String lockKey = LockInterface.lockKeyPrefix + LockInterface.lockKeyColon;
 
         if (StringUtils.isBlank(globalSynchronized.lockKey())) {
-            String classNameLockKey = methodClass.getName().replaceAll("\\.", ":");
-            lockKey += classNameLockKey + ":" + method.getName();
+            String classNameLockKey = methodClass.getName().replaceAll("\\.", LockInterface.lockKeyColon);
+            lockKey += classNameLockKey + LockInterface.lockKeyColon + method.getName();
         } else {
             lockKey += globalSynchronized.lockKey();
 
