@@ -33,7 +33,7 @@ public class RedisCLusterLocker implements LockInterface{
         try {
             RLock rlock = redissonClient.getLock(lockKey);
             rLockThreadLocal.set(rlock);
-            return rlock.tryLock();
+            return rlock.tryLock(0, timeOut, TimeUnit.MILLISECONDS);
         } catch (Exception e) {
             throw new GlobalLockException(e);
         }
