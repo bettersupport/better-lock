@@ -17,9 +17,9 @@ public class ZooKeeperLocker implements LockInterface{
     }
 
     @Override
-    public void lock(String lockKey, long timeOut) throws GlobalLockException {
+    public void lock(String lockKey, long leaseTime) throws GlobalLockException {
         try {
-            InterProcessMutex zLock = zookeeperClient.getLock(lockKey);
+            InterProcessMutex zLock = zookeeperClient.getLock(lockKey, leaseTime, TimeUnit.MILLISECONDS);
             zLockThreadLocal.set(zLock);
             zLock.acquire();
         } catch (Exception e) {
@@ -28,9 +28,9 @@ public class ZooKeeperLocker implements LockInterface{
     }
 
     @Override
-    public boolean lockWithoutWait(String lockKey, long timeOut) throws GlobalLockException {
+    public boolean lockWithoutWait(String lockKey, long leaseTime) throws GlobalLockException {
         try {
-            InterProcessMutex zLock = zookeeperClient.getLock(lockKey);
+            InterProcessMutex zLock = zookeeperClient.getLock(lockKey, leaseTime, TimeUnit.MILLISECONDS);
             zLockThreadLocal.set(zLock);
             return zLock.acquire(0, TimeUnit.MILLISECONDS);
         } catch (Exception e) {

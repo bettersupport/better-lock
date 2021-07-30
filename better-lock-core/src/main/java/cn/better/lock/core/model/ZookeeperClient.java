@@ -9,6 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @author wang.wencheng
@@ -44,12 +45,12 @@ public class ZookeeperClient {
         return new ZookeeperClient(nodes);
     }
 
-    public InterProcessMutex getLock(String lockKey) throws GlobalLockException {
+    public InterProcessMutex getLock(String lockKey, long leaseTime, TimeUnit unit) throws GlobalLockException {
         if (lockKey == null || lockKey.length() == 0) {
             throw new GlobalLockException("锁Key不能为空");
         }
         String key = String.format("/%s", lockKey.replaceAll(":", "/"));
-        InterProcessMutex lock = new InterProcessMutex(zkClient, key);
+        InterProcessMutex lock = new InterProcessMutex(zkClient, key, new ZookeeperLockDriver(leaseTime, unit));
         return lock;
     }
 }

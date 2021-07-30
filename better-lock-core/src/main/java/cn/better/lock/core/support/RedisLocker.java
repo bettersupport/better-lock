@@ -17,12 +17,12 @@ public class RedisLocker implements LockInterface{
     }
 
     @Override
-    public void lock(String lockKey, long timeOut) throws GlobalLockException {
+    public void lock(String lockKey, long leaseTime) throws GlobalLockException {
         try {
             while (true) {
-                String lockValue = String.valueOf(System.currentTimeMillis() + timeOut);
+                String lockValue = String.valueOf(System.currentTimeMillis() + leaseTime);
                 lockValueThreadLocal.set(lockValue);
-                if (lock(lockKey, lockValue, timeOut)) {
+                if (lock(lockKey, lockValue, leaseTime)) {
                     break;
                 }
             }
@@ -32,11 +32,11 @@ public class RedisLocker implements LockInterface{
     }
 
     @Override
-    public boolean lockWithoutWait(String lockKey, long timeOut) throws GlobalLockException {
+    public boolean lockWithoutWait(String lockKey, long leaseTime) throws GlobalLockException {
         try {
-            String lockValue = String.valueOf(System.currentTimeMillis() + timeOut);
+            String lockValue = String.valueOf(System.currentTimeMillis() + leaseTime);
             lockValueThreadLocal.set(lockValue);
-            return lock(lockKey, lockValue, timeOut);
+            return lock(lockKey, lockValue, leaseTime);
         } catch (Exception e) {
             throw new GlobalLockException(e);
         }

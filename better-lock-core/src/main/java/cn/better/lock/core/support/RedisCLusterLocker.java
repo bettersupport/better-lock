@@ -17,11 +17,11 @@ public class RedisCLusterLocker implements LockInterface{
     }
 
     @Override
-    public void lock(String lockKey, long timeOut) throws GlobalLockException {
+    public void lock(String lockKey, long leaseTime) throws GlobalLockException {
         try {
             RLock rlock = redissonClient.getLock(lockKey);
             rLockThreadLocal.set(rlock);
-            rlock.lock(timeOut, TimeUnit.MILLISECONDS);
+            rlock.lock(leaseTime, TimeUnit.MILLISECONDS);
         } catch (Exception e) {
             throw new GlobalLockException(e);
         }
@@ -29,11 +29,11 @@ public class RedisCLusterLocker implements LockInterface{
     }
 
     @Override
-    public boolean lockWithoutWait(String lockKey, long timeOut) throws GlobalLockException {
+    public boolean lockWithoutWait(String lockKey, long leaseTime) throws GlobalLockException {
         try {
             RLock rlock = redissonClient.getLock(lockKey);
             rLockThreadLocal.set(rlock);
-            return rlock.tryLock(0, timeOut, TimeUnit.MILLISECONDS);
+            return rlock.tryLock(0, leaseTime, TimeUnit.MILLISECONDS);
         } catch (Exception e) {
             throw new GlobalLockException(e);
         }

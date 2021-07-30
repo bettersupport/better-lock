@@ -19,12 +19,12 @@ public class TestServiceImpl implements TestService {
 
 
     @Override
-    @GlobalSynchronized(lockKey = "lock:test", timeOut = 1000L)
+    @GlobalSynchronized(lockKey = "lock:test", timeOut = 10000L)
     public Response<String> testRequest(LockParam<String, Object> param) {
         long startTimestamp = System.currentTimeMillis();
 
         try {
-            Thread.sleep(990L);
+            Thread.sleep(10000L);
         } catch (Exception e) {
             e.printStackTrace();
         }
