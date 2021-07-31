@@ -13,10 +13,10 @@ import java.util.concurrent.TimeUnit;
  */
 public class ZookeeperLockDriver extends StandardLockInternalsDriver {
 
-    private long timeOut;
+    private long ttl;
 
     public ZookeeperLockDriver(long leaseTime, TimeUnit unit) {
-        this.timeOut = unit.toMillis(leaseTime);
+        this.ttl = unit.toMillis(leaseTime);
     }
 
     @Override
@@ -24,11 +24,11 @@ public class ZookeeperLockDriver extends StandardLockInternalsDriver {
         String ourPath;
         if ( lockNodeBytes != null ) {
 
-            ourPath = client.create().withTtl(timeOut).creatingParentContainersIfNeeded().withProtection().withMode(CreateMode.PERSISTENT_SEQUENTIAL_WITH_TTL).forPath(path, lockNodeBytes);
+            ourPath = client.create().withTtl(ttl).creatingParentContainersIfNeeded().withProtection().withMode(CreateMode.PERSISTENT_SEQUENTIAL_WITH_TTL).forPath(path, lockNodeBytes);
 
         } else {
 
-            ourPath = client.create().withTtl(timeOut).creatingParentContainersIfNeeded().withProtection().withMode(CreateMode.PERSISTENT_SEQUENTIAL_WITH_TTL).forPath(path);
+            ourPath = client.create().withTtl(ttl).creatingParentContainersIfNeeded().withProtection().withMode(CreateMode.PERSISTENT_SEQUENTIAL_WITH_TTL).forPath(path);
 
         }
         return ourPath;

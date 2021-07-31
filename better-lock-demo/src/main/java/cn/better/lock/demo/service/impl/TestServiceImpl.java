@@ -19,7 +19,7 @@ public class TestServiceImpl implements TestService {
 
 
     @Override
-    @GlobalSynchronized(lockKey = "lock:test", timeOut = 10000L)
+    @GlobalSynchronized(lockKey = "lock:test", timeOut = 1000L)
     public Response<String> testRequest(LockParam<String, Object> param) {
         long startTimestamp = System.currentTimeMillis();
 
@@ -37,7 +37,7 @@ public class TestServiceImpl implements TestService {
     }
 
     @Override
-    @GlobalSynchronized(lockKey = "lock:test", timeOut = 10000L)
+    @GlobalSynchronized(lockKey = "lock:test", timeOut = 1000L)
     public Response<String> testRequest2(LockParam<String, Object> param) {
         long startTimestamp = System.currentTimeMillis();
 
