@@ -20,7 +20,7 @@ import org.springframework.context.annotation.Configuration;
  */
 @Configuration
 @EnableConfigurationProperties(RedisProperties.class)
-@ConditionalOnProperty(prefix = "spring.better.lock", name = "lock-type", havingValue = BetterLockProperties.LockType.REDIS_CLUSTER_LOCK)
+@ConditionalOnProperty(prefix = "spring.better.lock", name = "lock-type", havingValue = BetterLockProperties.LockType.REDISSON_LOCK)
 public class RedissonAutoConfiguration {
 
     private static final String REDIS_SSL_PREFIX = "rediss://";

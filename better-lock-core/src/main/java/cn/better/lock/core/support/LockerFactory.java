@@ -13,7 +13,7 @@ public class LockerFactory {
     public static LockInterface getLocker(String lockType, LockerConfig lockerConfig) {
         if (BetterLockProperties.LockType.REDIS_LOCK.equals(lockType)) {
             return new RedisLocker(lockerConfig.getRedisTemplate());
-        } else if (BetterLockProperties.LockType.REDIS_CLUSTER_LOCK.equals(lockType)) {
+        } else if (BetterLockProperties.LockType.REDISSON_LOCK.equals(lockType)) {
             return new RedisCLusterLocker(lockerConfig.getRedissonClient());
         } else if (BetterLockProperties.LockType.ZOOKEEPER_LOCK.equals(lockType)) {
             return new ZooKeeperLocker(lockerConfig.getZookeeperClient());

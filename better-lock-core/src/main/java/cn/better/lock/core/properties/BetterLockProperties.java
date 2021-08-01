@@ -39,7 +39,7 @@ public class BetterLockProperties {
 
     public static class LockType {
         public static final String REDIS_LOCK = "redis";
-        public static final String REDIS_CLUSTER_LOCK = "redisCluster";
+        public static final String REDISSON_LOCK = "redisson";
         public static final String ZOOKEEPER_LOCK = "zookeeper";
     }
 

@@ -36,8 +36,8 @@
           "description": "zookeeper achieve."
         },
         {
-          "value": "redisCluster",
-          "description": "redisCluster achieve."
+          "value": "redisson",
+          "description": "redisson achieve."
         }
       ]
     },
