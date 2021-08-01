@@ -3,6 +3,12 @@ package cn.better.lock.core.model;
 import cn.better.lock.core.annotation.GlobalSynchronized;
 import cn.better.lock.core.support.LockInterface;
 
+/**
+ * 锁的各项参数
+ * @author wang.wencheng
+ * @date 2021-7-13
+ * @remark
+ */
 public class LockAttribute {
 
     private GlobalSynchronized globalSynchronized;

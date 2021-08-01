@@ -9,7 +9,9 @@ import org.springframework.context.annotation.Configuration;
 
 import java.io.IOException;
 
+
 /**
+ * Zookeeper的配置类
  * @author wang.wencheng
  * @date 2021-7-28
  * @remark
@@ -21,8 +23,14 @@ public class ZookeeperAutoConfiguration {
     @Autowired
     private BetterLockProperties betterLockProperties;
 
+    /**
+     * 创建ZookeeperCLient
+     * @return
+     * @throws IOException
+     */
     @Bean
     public ZookeeperClient zookeeperClient() throws IOException {
+        // 创建ZookeeperCLient
         return ZookeeperClient.createClient(betterLockProperties.getZookeeper().getNodes());
     }
 }

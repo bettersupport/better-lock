@@ -23,27 +23,50 @@ import org.springframework.stereotype.Component;
 
 import java.lang.reflect.Method;
 
+/**
+ * 切面
+ * @author wang.wencheng
+ * @date 2021-7-11
+ * @remark
+ */
 @Aspect
 @Component
 public class BetterLockAspect {
     private static final Logger log = LoggerFactory.getLogger(BetterLockAspect.class);
 
+    /**
+     * 线程内的锁的各项参数
+     */
     public static ThreadLocal<LockAttribute> lockAttributeThreadLocal = new ThreadLocal<>();
 
+    /**
+     * 锁的配置参数
+     */
     @Autowired
     private BetterLockProperties lockProperties;
+    /**
+     * springboot redis数据源
+     */
     @Autowired(required = false)
     private StringRedisTemplate redisTemplate;
+    /**
+     * Redisson客户端
+     */
     @Autowired(required = false)
     private RedissonClient redissonClient;
+    /**
+     * Zookeeper客户端
+     */
     @Autowired(required = false)
     private ZookeeperClient zookeeperClient;
 
     @Before("@annotation(cn.better.lock.core.annotation.GlobalSynchronized)")
     public void lockMethod(JoinPoint joinPoint) throws GlobalLockException {
 
+        // 获取锁的各项参数，包括锁的主键和超时时间
         LockAttribute lockAttribute = getLockKeyByAnnotation(joinPoint);
 
+        // 获取锁对象
         LockInterface locker = LockerFactory.getLocker(lockProperties.getLockType(),
                 LockerConfig
                         .build()
@@ -53,9 +76,12 @@ public class BetterLockAspect {
         lockAttribute.setLocker(locker);
 
         lockAttributeThreadLocal.set(lockAttribute);
+
         if (lockAttribute.getGlobalSynchronized().lockWait()) {
+            // 等待锁，一直等待知道获取到锁为止
             locker.lock(lockAttribute.getLockKey(), lockAttribute.getTimeOut());
         } else {
+            // 不等待锁，直接返回获取锁的结果
             boolean lockResult = locker.lockWithoutWait(lockAttribute.getLockKey(), lockAttribute.getTimeOut());
             if (null == lockAttribute.getParam()) {
                 throw new GlobalLockException("LockParam 参数不能为空");
@@ -67,6 +93,11 @@ public class BetterLockAspect {
 
     }
 
+    /**
+     * 方法返回之后获取锁并解锁
+     * @param joinPoint 切面参数
+     * @throws GlobalLockException 分布式锁异常
+     */
     @After("@annotation(cn.better.lock.core.annotation.GlobalSynchronized)")
     public void unlockMethod(JoinPoint joinPoint) throws GlobalLockException {
 
@@ -86,14 +117,21 @@ public class BetterLockAspect {
 
     }
 
-
+    /**
+     * 通过注解获取加锁的参数
+     * @param joinPoint
+     * @return
+     * @throws GlobalLockException
+     */
     private LockAttribute getLockKeyByAnnotation(JoinPoint joinPoint) throws GlobalLockException {
 
+        // 获取方法的各项属性
         Class methodClass = joinPoint.getTarget().getClass();
         Object[] args = joinPoint.getArgs();
         Class<?>[] argTypes = new Class[joinPoint.getArgs().length];
 
 
+        // 获取LockParam
         LockParam param = new LockParam();
 
         for (int i = 0; i < args.length; i++) {

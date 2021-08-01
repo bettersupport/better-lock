@@ -12,6 +12,12 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+/**
+ * Redisson的配置类
+ * @author wang.wencheng
+ * @date 2021-7-18
+ * @remark
+ */
 @Configuration
 @EnableConfigurationProperties(RedisProperties.class)
 @ConditionalOnProperty(prefix = "spring.better.lock", name = "lock-type", havingValue = BetterLockProperties.LockType.REDIS_CLUSTER_LOCK)
@@ -23,6 +29,10 @@ public class RedissonAutoConfiguration {
     @Autowired
     private RedisProperties redisProperties;
 
+    /**
+     * redis单机 RedissonClient
+     * @return RedissonClient
+     */
     @Bean
     @ConditionalOnProperty(prefix = "spring.redis", name = "host")
     public RedissonClient redissonSingle() {
@@ -36,6 +46,10 @@ public class RedissonAutoConfiguration {
         return Redisson.create(config);
     }
 
+    /**
+     * redis集群 RedissonClient
+     * @return RedissonClient
+     */
     @Bean
     @ConditionalOnProperty(prefix = "spring.redis.cluster", name = "nodes")
     public RedissonClient redissonCluster() {
@@ -49,6 +63,10 @@ public class RedissonAutoConfiguration {
         return Redisson.create(config);
     }
 
+    /**
+     * redis哨兵模式 RedissonClient
+     * @return RedissonClient
+     */
     @Bean
     @ConditionalOnProperty(prefix = "spring.redis.sentinel", name = "nodes")
     public RedissonClient redissonSentinel() {

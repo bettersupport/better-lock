@@ -6,6 +6,12 @@ import org.apache.curator.framework.recipes.locks.InterProcessMutex;
 
 import java.util.concurrent.TimeUnit;
 
+/**
+ * zookeeper锁
+ * @author wang.wencheng
+ * @date 2021-7-13
+ * @remark
+ */
 public class ZooKeeperLocker implements LockInterface{
 
     private static ThreadLocal<InterProcessMutex> zLockThreadLocal = new ThreadLocal<>();

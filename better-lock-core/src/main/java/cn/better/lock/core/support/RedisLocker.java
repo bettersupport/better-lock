@@ -6,6 +6,12 @@ import org.springframework.data.redis.core.StringRedisTemplate;
 
 import java.util.concurrent.TimeUnit;
 
+/**
+ * Springboot redis锁
+ * @author wang.wencheng
+ * @date 2021-7-13
+ * @remark
+ */
 public class RedisLocker implements LockInterface{
 
     private static ThreadLocal<String> lockValueThreadLocal = new ThreadLocal<>();

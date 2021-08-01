@@ -16,6 +16,9 @@ import java.util.concurrent.TimeUnit;
  */
 public class ZookeeperClient {
 
+    /**
+     * zookeeper相关参数
+     */
     private static final int sessionTimeout = 5000;
 
     private static final int connectTimeout = 5000;
@@ -28,6 +31,10 @@ public class ZookeeperClient {
 
     private CuratorFramework zkClient;
 
+    /**
+     * 构造函数
+     * @param nodes zookeeper各节点
+     */
     private ZookeeperClient(String nodes) {
         ExponentialBackoffRetry retryPolicy = new ExponentialBackoffRetry(baseSleepTimeMs, maxRetries, maxSleepMs);
         zkClient = CuratorFrameworkFactory.builder()
@@ -43,10 +50,19 @@ public class ZookeeperClient {
         return new ZookeeperClient(nodes);
     }
 
+    /**
+     * 获取锁
+     * @param lockKey 锁主键
+     * @param leaseTime 失效时间
+     * @param unit 时间单位
+     * @return 锁对象
+     * @throws GlobalLockException 分布式锁异常
+     */
     public InterProcessMutex getLock(String lockKey, long leaseTime, TimeUnit unit) throws GlobalLockException {
         if (lockKey == null || lockKey.length() == 0) {
             throw new GlobalLockException("锁Key不能为空");
         }
+        // 格式化锁key为zookeeper路径格式
         String key = String.format("/%s", lockKey.replaceAll(":", "/"));
         InterProcessMutex lock = new InterProcessMutex(zkClient, key, new ZookeeperLockDriver(leaseTime, unit));
         return lock;

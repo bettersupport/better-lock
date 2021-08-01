@@ -6,6 +6,12 @@ import org.redisson.api.RedissonClient;
 
 import java.util.concurrent.TimeUnit;
 
+/**
+ * Redisson锁
+ * @author wang.wencheng
+ * @date 2021-7-16
+ * @remark
+ */
 public class RedisCLusterLocker implements LockInterface{
 
     private static ThreadLocal<RLock> rLockThreadLocal = new ThreadLocal<>();

@@ -4,6 +4,12 @@ import org.springframework.core.annotation.AliasFor;
 
 import java.lang.annotation.*;
 
+/**
+ * 分布式全局锁注解
+ * @author wang.wencheng
+ * @date 2021-7-11
+ * @remark
+ */
 @Target({ElementType.METHOD, ElementType.ANNOTATION_TYPE})
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
@@ -17,14 +23,14 @@ public @interface GlobalSynchronized {
     String value() default "";
 
     /**
-     * 锁的key，支持format模式
+     * 锁的key，支持format模式String.format("%s World", "Hello")
      * @return
      */
     @AliasFor("value")
     String lockKey() default "";
 
     /**
-     * 自定义值主键
+     * 自定义值主键，根据主键从LockParam中取值
      * @return
      */
     String customValueKey() default "";

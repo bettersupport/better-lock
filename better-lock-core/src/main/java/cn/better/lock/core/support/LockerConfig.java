@@ -4,12 +4,26 @@ import cn.better.lock.core.model.ZookeeperClient;
 import org.redisson.api.RedissonClient;
 import org.springframework.data.redis.core.StringRedisTemplate;
 
+/**
+ * @author wang.wencheng
+ * @date 2021-7-13
+ * @remark
+ */
 public class LockerConfig {
 
+    /**
+     * springboot redis数据源
+     */
     private StringRedisTemplate redisTemplate;
 
+    /**
+     * Redisson客户端
+     */
     private RedissonClient redissonClient;
 
+    /**
+     * Zookeeper客户端
+     */
     private ZookeeperClient zookeeperClient;
 
     public StringRedisTemplate getRedisTemplate() {
