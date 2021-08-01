@@ -2,7 +2,6 @@ package cn.better.lock.core.properties;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
-import java.util.List;
 
 @ConfigurationProperties(prefix = "spring.better.lock")
 public class BetterLockProperties {

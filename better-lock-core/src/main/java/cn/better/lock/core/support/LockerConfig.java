@@ -1,7 +1,6 @@
 package cn.better.lock.core.support;
 
 import cn.better.lock.core.model.ZookeeperClient;
-import cn.better.lock.core.properties.BetterLockProperties;
 import org.redisson.api.RedissonClient;
 import org.springframework.data.redis.core.StringRedisTemplate;
 
