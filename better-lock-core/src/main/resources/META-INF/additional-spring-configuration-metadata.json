@@ -2,8 +2,8 @@
   "groups": [
     {
       "name": "spring.better.lock",
-      "type": "cn.better.lock.core.properties.BetterLockProperties",
-      "sourceType": "cn.better.lock.core.properties.BetterLockProperties",
+      "type": "io.github.bettersupport.lock.core.properties.BetterLockProperties",
+      "sourceType": "io.github.bettersupport.lock.core.properties.BetterLockProperties",
       "description": "lock properties."
     }
   ],
@@ -11,14 +11,14 @@
     {
       "name": "spring.better.lock.lock-type",
       "type": "java.lang.String",
-      "sourceType": "cn.better.lock.core.properties.BetterLockProperties",
+      "sourceType": "io.github.bettersupport.lock.core.properties.BetterLockProperties",
       "defaultValue": "redis",
       "description": "lock achieve type."
     },
     {
       "name": "spring.better.lock.zookeeper.nodes",
       "type": "java.lang.String",
-      "sourceType": "cn.better.lock.core.properties.BetterLockProperties",
+      "sourceType": "io.github.bettersupport.lock.core.properties.BetterLockProperties",
       "defaultValue": "127.0.0.1:2181",
       "description": "zookeeper nodes."
     }
