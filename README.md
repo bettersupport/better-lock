@@ -14,7 +14,7 @@ extendedTypesEnabled=true
 #### maven 引入
 ```xml
     <dependency>
-        <groupId>cn.better.lock</groupId>
+        <groupId>io.github.bettersupport.lock</groupId>
         <artifactId>better-lock-core</artifactId>
         <version>${version}</version>
     </dependency>
