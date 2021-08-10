@@ -9,8 +9,8 @@ import java.util.concurrent.TimeUnit;
 /**
  * Redisson锁
  * @author wang.wencheng
- * @date 2021-7-16
- * @remark
+ * date 2021-7-16
+ * describe
  */
 public class RedisCLusterLocker implements LockInterface{
 

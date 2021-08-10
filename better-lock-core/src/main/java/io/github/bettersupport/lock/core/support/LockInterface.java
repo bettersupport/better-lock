@@ -5,8 +5,8 @@ import io.github.bettersupport.lock.core.exception.GlobalLockException;
 /**
  * 锁接口
  * @author wang.wencheng
- * @date 2021-7-13
- * @remark
+ * date 2021-7-13
+ * describe
  */
 public interface LockInterface {
 

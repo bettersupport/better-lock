@@ -3,8 +3,8 @@ package io.github.bettersupport.lock.core.exception;
 /**
  * 分布式锁异常
  * @author wang.wencheng
- * @date 2021-7-11
- * @remark
+ * date 2021-7-11
+ * describe
  */
 public class GlobalLockException extends Exception{
 

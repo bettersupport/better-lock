@@ -11,8 +11,8 @@ import java.util.concurrent.TimeUnit;
 
 /**
  * @author wang.wencheng
- * @date 2021-7-29
- * @remark
+ * date 2021-7-29
+ * describe
  */
 public class ZookeeperClient {
 

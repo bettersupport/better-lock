@@ -7,8 +7,8 @@ import java.lang.annotation.*;
 /**
  * 分布式全局锁注解
  * @author wang.wencheng
- * @date 2021-7-11
- * @remark
+ * date 2021-7-11
+ * describe
  */
 @Target({ElementType.METHOD, ElementType.ANNOTATION_TYPE})
 @Retention(RetentionPolicy.RUNTIME)

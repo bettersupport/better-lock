@@ -6,8 +6,8 @@ import java.util.Map;
 /**
  * 被锁方法的入参
  * @author wang.wencheng
- * @date 2021-7-11
- * @remark
+ * date 2021-7-11
+ * describe
  * @param <K> KEY
  * @param <V> VALUE
  */

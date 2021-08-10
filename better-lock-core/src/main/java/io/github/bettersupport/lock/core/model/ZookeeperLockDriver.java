@@ -9,8 +9,8 @@ import java.util.concurrent.TimeUnit;
 /**
  * zookeeper 获取锁驱动
  * @author wang.wencheng
- * @date 2021-7-30
- * @remark
+ * date 2021-7-30
+ * describe
  */
 public class ZookeeperLockDriver extends StandardLockInternalsDriver {
 

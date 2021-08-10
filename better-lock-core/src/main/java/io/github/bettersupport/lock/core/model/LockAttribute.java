@@ -6,8 +6,8 @@ import io.github.bettersupport.lock.core.support.LockInterface;
 /**
  * 锁的各项参数
  * @author wang.wencheng
- * @date 2021-7-13
- * @remark
+ * date 2021-7-13
+ * describe
  */
 public class LockAttribute {
 

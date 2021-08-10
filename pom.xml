@@ -8,6 +8,9 @@
     <artifactId>better-lock</artifactId>
     <packaging>pom</packaging>
     <version>1.0.0</version>
+    <name>better-lock</name>
+    <description>distribute lock</description>
+    <url>https://github.com/bettersupport/better-lock.git</url>
 
     <modules>
         <module>better-lock-demo</module>
@@ -121,6 +124,10 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-javadoc-plugin</artifactId>
                 <version>2.9.1</version>
+                <configuration>
+                    <source>11</source>
+                    <encoding>UTF-8</encoding>
+                </configuration>
                 <executions>
                     <execution>
                         <id>attach-javadocs</id>
@@ -153,5 +160,26 @@
             <url>http://maven.aliyun.com/nexus/content/groups/public</url>
         </repository>
     </repositories>
+
+    <licenses>
+        <license>
+            <name>The Apache Software License, Version 2.0</name>
+            <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
+    <scm>
+        <tag>main</tag>
+        <url>git@github.com:bettersupport/better-lock.git</url>
+        <connection>scm:git:git@github.com:bettersupport/better-lock.git</connection>
+        <developerConnection>scm:git:git@github.com:bettersupport/better-lock.git</developerConnection>
+    </scm>
+    <developers>
+        <developer>
+            <name>酷酷的爆炸头</name>
+            <email>643470274@qq.com</email>
+            <organization>China</organization>
+        </developer>
+    </developers>
 
 </project>

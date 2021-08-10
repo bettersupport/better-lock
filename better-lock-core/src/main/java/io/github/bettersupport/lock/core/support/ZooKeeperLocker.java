@@ -9,8 +9,8 @@ import java.util.concurrent.TimeUnit;
 /**
  * zookeeper锁
  * @author wang.wencheng
- * @date 2021-7-13
- * @remark
+ * date 2021-7-13
+ * describe
  */
 public class ZooKeeperLocker implements LockInterface{
 

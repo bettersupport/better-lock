@@ -6,8 +6,8 @@ import org.springframework.data.redis.core.StringRedisTemplate;
 
 /**
  * @author wang.wencheng
- * @date 2021-7-13
- * @remark
+ * date 2021-7-13
+ * describe
  */
 public class LockerConfig {
 

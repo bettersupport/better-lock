@@ -13,8 +13,8 @@ import java.io.IOException;
 /**
  * Zookeeper的配置类
  * @author wang.wencheng
- * @date 2021-7-28
- * @remark
+ * date 2021-7-28
+ * describe
  */
 @Configuration
 @ConditionalOnProperty(prefix = "spring.better.lock", name = "lock-type", havingValue = BetterLockProperties.LockType.ZOOKEEPER_LOCK)

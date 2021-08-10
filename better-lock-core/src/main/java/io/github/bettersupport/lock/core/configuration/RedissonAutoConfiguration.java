@@ -15,8 +15,8 @@ import org.springframework.context.annotation.Configuration;
 /**
  * Redisson的配置类
  * @author wang.wencheng
- * @date 2021-7-18
- * @remark
+ * date 2021-7-18
+ * describe
  */
 @Configuration
 @EnableConfigurationProperties(RedisProperties.class)

@@ -26,8 +26,8 @@ import java.lang.reflect.Method;
 /**
  * 切面
  * @author wang.wencheng
- * @date 2021-7-11
- * @remark
+ * date 2021-7-11
+ * describe
  */
 @Aspect
 @Component
