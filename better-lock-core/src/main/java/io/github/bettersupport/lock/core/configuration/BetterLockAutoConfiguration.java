@@ -14,7 +14,7 @@ import org.springframework.context.annotation.EnableAspectJAutoProxy;
  */
 @Configuration
 @EnableAspectJAutoProxy
-@ComponentScan({"cn.better.lock.core.aspect"})
+@ComponentScan({"io.github.bettersupport.lock.core.aspect"})
 @EnableConfigurationProperties(BetterLockProperties.class)
 public class BetterLockAutoConfiguration {
 }
