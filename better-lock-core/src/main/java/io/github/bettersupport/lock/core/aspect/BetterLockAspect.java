@@ -9,6 +9,7 @@ import io.github.bettersupport.lock.core.properties.BetterLockProperties;
 import io.github.bettersupport.lock.core.support.LockInterface;
 import io.github.bettersupport.lock.core.support.LockerConfig;
 import io.github.bettersupport.lock.core.support.LockerFactory;
+import io.github.bettersupport.lock.core.support.StackThreadLocalHandler;
 import org.apache.commons.lang3.StringUtils;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.After;
@@ -22,6 +23,7 @@ import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Component;
 
 import java.lang.reflect.Method;
+import java.util.Stack;
 
 /**
  * 切面
@@ -37,7 +39,7 @@ public class BetterLockAspect {
     /**
      * 线程内的锁的各项参数
      */
-    public static ThreadLocal<LockAttribute> lockAttributeThreadLocal = new ThreadLocal<>();
+    public static ThreadLocal<Stack<LockAttribute>> lockAttributeThreadLocal = new ThreadLocal<>();
 
     /**
      * 锁的配置参数
@@ -75,7 +77,7 @@ public class BetterLockAspect {
                         .buildZookeeperClient(zookeeperClient));
         lockAttribute.setLocker(locker);
 
-        lockAttributeThreadLocal.set(lockAttribute);
+        StackThreadLocalHandler.set(lockAttributeThreadLocal, lockAttribute);
 
         if (lockAttribute.getGlobalSynchronized().lockWait()) {
             // 等待锁，一直等待知道获取到锁为止
@@ -101,15 +103,12 @@ public class BetterLockAspect {
     @After("@annotation(io.github.bettersupport.lock.core.annotation.GlobalSynchronized)")
     public void unlockMethod(JoinPoint joinPoint) throws GlobalLockException {
 
-        LockAttribute lockAttribute = lockAttributeThreadLocal.get();
+        LockAttribute lockAttribute = StackThreadLocalHandler.getAndRelease(lockAttributeThreadLocal);
 
         if (lockAttribute == null) {
             throw new GlobalLockException("ThreadLocal 不存在锁属性");
         }
         LockInterface locker = lockAttribute.getLocker();
-
-        // 释放ThreadLocal
-        lockAttributeThreadLocal.set(null);
 
         locker.unlock(lockAttribute.getLockKey());
 

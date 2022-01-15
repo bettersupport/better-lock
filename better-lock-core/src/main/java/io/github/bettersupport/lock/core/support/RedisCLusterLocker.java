@@ -4,6 +4,7 @@ import io.github.bettersupport.lock.core.exception.GlobalLockException;
 import org.redisson.api.RLock;
 import org.redisson.api.RedissonClient;
 
+import java.util.Stack;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -14,7 +15,7 @@ import java.util.concurrent.TimeUnit;
  */
 public class RedisCLusterLocker implements LockInterface{
 
-    private static ThreadLocal<RLock> rLockThreadLocal = new ThreadLocal<>();
+    private static ThreadLocal<Stack<RLock>> rLockThreadLocal = new ThreadLocal<>();
 
     private RedissonClient redissonClient;
 
@@ -26,7 +27,7 @@ public class RedisCLusterLocker implements LockInterface{
     public void lock(String lockKey, long leaseTime) throws GlobalLockException {
         try {
             RLock rlock = redissonClient.getLock(lockKey);
-            rLockThreadLocal.set(rlock);
+            StackThreadLocalHandler.set(rLockThreadLocal, rlock);
             rlock.lock(leaseTime, TimeUnit.MILLISECONDS);
         } catch (Exception e) {
             throw new GlobalLockException(e);
@@ -38,7 +39,7 @@ public class RedisCLusterLocker implements LockInterface{
     public boolean lockWithoutWait(String lockKey, long leaseTime) throws GlobalLockException {
         try {
             RLock rlock = redissonClient.getLock(lockKey);
-            rLockThreadLocal.set(rlock);
+            StackThreadLocalHandler.set(rLockThreadLocal, rlock);
             return rlock.tryLock(0, leaseTime, TimeUnit.MILLISECONDS);
         } catch (Exception e) {
             throw new GlobalLockException(e);
@@ -48,7 +49,7 @@ public class RedisCLusterLocker implements LockInterface{
     @Override
     public void unlock(String lockKey) throws GlobalLockException {
         try {
-            RLock rlock = rLockThreadLocal.get();
+            RLock rlock = StackThreadLocalHandler.getAndRelease(rLockThreadLocal);
             rLockThreadLocal.set(null);
             if (rlock.isLocked() && rlock.isHeldByCurrentThread()) {
                 try {

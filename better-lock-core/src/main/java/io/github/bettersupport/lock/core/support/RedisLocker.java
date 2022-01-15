@@ -4,6 +4,7 @@ import io.github.bettersupport.lock.core.exception.GlobalLockException;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.redis.core.StringRedisTemplate;
 
+import java.util.Stack;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -14,7 +15,7 @@ import java.util.concurrent.TimeUnit;
  */
 public class RedisLocker implements LockInterface{
 
-    private static ThreadLocal<String> lockValueThreadLocal = new ThreadLocal<>();
+    private static ThreadLocal<Stack<String>> lockValueThreadLocal = new ThreadLocal<>();
 
     private StringRedisTemplate redisTemplate;
 
@@ -25,9 +26,11 @@ public class RedisLocker implements LockInterface{
     @Override
     public void lock(String lockKey, long leaseTime) throws GlobalLockException {
         try {
+            String lockValue = String.valueOf(System.currentTimeMillis() + leaseTime);
+            StackThreadLocalHandler.set(lockValueThreadLocal, lockValue);
             while (true) {
-                String lockValue = String.valueOf(System.currentTimeMillis() + leaseTime);
-                lockValueThreadLocal.set(lockValue);
+                lockValue = String.valueOf(System.currentTimeMillis() + leaseTime);
+                StackThreadLocalHandler.setTop(lockValueThreadLocal, lockValue);
                 if (lock(lockKey, lockValue, leaseTime)) {
                     break;
                 }
@@ -41,7 +44,7 @@ public class RedisLocker implements LockInterface{
     public boolean lockWithoutWait(String lockKey, long leaseTime) throws GlobalLockException {
         try {
             String lockValue = String.valueOf(System.currentTimeMillis() + leaseTime);
-            lockValueThreadLocal.set(lockValue);
+            StackThreadLocalHandler.set(lockValueThreadLocal, lockValue);
             return lock(lockKey, lockValue, leaseTime);
         } catch (Exception e) {
             throw new GlobalLockException(e);
@@ -51,10 +54,8 @@ public class RedisLocker implements LockInterface{
     @Override
     public void unlock(String lockKey) throws GlobalLockException {
         try {
-            String lockValue = lockValueThreadLocal.get();
+            String lockValue = StackThreadLocalHandler.getAndRelease(lockValueThreadLocal);
             unlock(lockKey, lockValue);
-            // 释放ThreadLocal
-            lockValueThreadLocal.set(null);
         } catch (Exception e) {
             throw new GlobalLockException(e);
         }
