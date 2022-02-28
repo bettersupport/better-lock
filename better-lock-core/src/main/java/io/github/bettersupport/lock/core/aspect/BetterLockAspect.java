@@ -15,6 +15,7 @@ import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.After;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
+import org.aspectj.lang.reflect.MethodSignature;
 import org.redisson.api.RedissonClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -127,25 +128,19 @@ public class BetterLockAspect {
         // 获取方法的各项属性
         Class methodClass = joinPoint.getTarget().getClass();
         Object[] args = joinPoint.getArgs();
-        Class<?>[] argTypes = new Class[joinPoint.getArgs().length];
 
 
         // 获取LockParam
         LockParam param = new LockParam();
 
         for (int i = 0; i < args.length; i++) {
-            argTypes[i] = args[i].getClass();
             if (args[i] instanceof LockParam) {
                 param = (LockParam) args[i];
             }
         }
 
-        Method method;
-        try {
-            method = methodClass.getMethod(joinPoint.getSignature().getName(), argTypes);
-        } catch (NoSuchMethodException e) {
-            throw new GlobalLockException(e);
-        }
+        MethodSignature methodSignature = (MethodSignature) joinPoint.getSignature();
+        Method method = methodSignature.getMethod();
 
         GlobalSynchronized globalSynchronized = method.getAnnotation(GlobalSynchronized.class);
         if (globalSynchronized == null) {

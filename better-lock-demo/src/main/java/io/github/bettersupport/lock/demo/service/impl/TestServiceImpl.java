@@ -21,7 +21,7 @@ public class TestServiceImpl implements TestService {
 
     @Override
     @GlobalSynchronized(lockKey = "lock:test", timeOut = 1000L)
-    public Response<String> testRequest(LockParam<String, Object> param) {
+    public Response<String> testRequest(LockParam<String, Object> param, Long suId) {
         long startTimestamp = System.currentTimeMillis();
 
 

@@ -15,7 +15,7 @@ public class TestApiImpl implements TestApi {
 
     @Override
     public Response<String> testRequest(LockParam<String, Object> param) {
-        return testService.testRequest(param);
+        return testService.testRequest(param, null);
     }
 
     @Override
