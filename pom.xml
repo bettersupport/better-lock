@@ -7,7 +7,7 @@
     <groupId>io.github.bettersupport.lock</groupId>
     <artifactId>better-lock</artifactId>
     <packaging>pom</packaging>
-    <version>1.0.5</version>
+    <version>1.0.6</version>
     <name>better-lock</name>
     <description>distribute lock</description>
     <url>https://github.com/bettersupport/better-lock.git</url>
@@ -157,7 +157,7 @@
     <repositories>
         <repository>
             <id>central</id>
-            <url>http://maven.aliyun.com/nexus/content/groups/public</url>
+            <url>https://maven.aliyun.com/nexus/content/groups/public</url>
         </repository>
     </repositories>
 
