@@ -14,12 +14,12 @@ public class TestApiImpl implements TestApi {
     private TestService testService;
 
     @Override
-    public Response<String> testRequest(LockParam<String, Object> param) {
+    public Response<String> testRequest(LockParam<String, String> param) {
         return testService.testRequest(param, null);
     }
 
     @Override
-    public Response<String> testRequest2(LockParam<String, Object> param) {
+    public Response<String> testRequest2(LockParam<String, String> param) {
         return testService.testRequest2(param);
     }
 }

@@ -9,9 +9,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 public interface TestApi {
 
     @RequestMapping(value = "testRequest", method = RequestMethod.POST)
-    Response<String> testRequest(@RequestBody LockParam<String, Object> param);
+    Response<String> testRequest(@RequestBody LockParam<String, String> param);
 
     @RequestMapping(value = "testRequest2", method = RequestMethod.POST)
-    Response<String> testRequest2(@RequestBody LockParam<String, Object> param);
+    Response<String> testRequest2(@RequestBody LockParam<String, String> param);
 
 }

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="io.github.bettersupport.lock.demo.dao.ImSessionTestMapper">
+  <select id="countBySession" parameterType="java.lang.String" resultType="java.lang.Integer">
+    select count(*)
+    from im_session_test
+    where
+        session_id = #{sessionId,jdbcType=VARCHAR}
+  </select>
+
+  <insert id="insertSelective" parameterType="java.lang.String">
+    insert into im_session_test (session_id)
+    values (#{sessionId,jdbcType=VARCHAR})
+  </insert>
+
+  <delete id="deletBySessionId" parameterType="java.lang.String">
+    delete from im_session_test
+    where
+      session_id = #{sessionId,jdbcType=VARCHAR}
+  </delete>
+</mapper>

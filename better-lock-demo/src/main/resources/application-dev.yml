@@ -6,6 +6,26 @@ spring:
     multipart:
       max-file-size: 20MB
       max-request-size: 20MB
+  datasource:
+    druid:
+      lock:
+        platform: mysql
+        type: com.alibaba.druid.pool.DruidDataSource
+        driverClassName: com.mysql.cj.jdbc.Driver
+        url: jdbc:mysql://localhost:3306/test?useSSL=false&useUnicode=true&allowMultiQueries=true&characterEncoding=UTF8&serverTimezone=GMT%2B8&zeroDateTimeBehavior=convertToNull&allowPublicKeyRetrieval=true
+        username: root
+        password: 123456
+        initialSize: 5
+        minIdle: 5
+        maxActive: 20
+        maxWait: 10000
+        timeBetweenEvictionRunsMillis: 60000
+        minEvictableIdleTimeMillis: 600000
+        validationQuery: select 1
+        testWhileIdle: true
+        testOnBorrow: false
+        testOnReturn: false
+        maxPoolPreparedStatementPerConnectionSize: -1
   redis:
 #    cluster:
 #      nodes: 127.0.0.1:7000,127.0.0.1:7001,127.0.0.1:7002,127.0.0.1:7003,127.0.0.1:7004,127.0.0.1:7005

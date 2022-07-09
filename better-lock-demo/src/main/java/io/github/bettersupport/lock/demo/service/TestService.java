@@ -5,8 +5,8 @@ import io.github.bettersupport.lock.demo.model.Response;
 
 public interface TestService {
 
-    Response<String> testRequest(LockParam<String, Object> param, Long suId);
+    Response<String> testRequest(LockParam<String, String> param, Long suId);
 
-    Response<String> testRequest2(LockParam<String, Object> param);
+    Response<String> testRequest2(LockParam<String, String> param);
 
 }
