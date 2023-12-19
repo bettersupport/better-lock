@@ -7,7 +7,7 @@
     <groupId>io.github.bettersupport.lock</groupId>
     <artifactId>better-lock</artifactId>
     <packaging>pom</packaging>
-    <version>1.0.6</version>
+    <version>${revision}</version>
     <name>better-lock</name>
     <description>distribute lock</description>
     <url>https://github.com/bettersupport/better-lock.git</url>
@@ -16,6 +16,10 @@
         <module>better-lock-demo</module>
         <module>better-lock-core</module>
     </modules>
+
+    <properties>
+        <revision>1.0.7</revision>
+    </properties>
 
     <dependencyManagement>
         <dependencies>
@@ -107,8 +111,8 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.8.1</version>
                 <configuration>
-                    <source>11</source>
-                    <target>11</target>
+                    <source>8</source>
+                    <target>8</target>
                     <encoding>UTF-8</encoding>
                 </configuration>
             </plugin>
@@ -130,7 +134,7 @@
                 <artifactId>maven-javadoc-plugin</artifactId>
                 <version>2.9.1</version>
                 <configuration>
-                    <source>11</source>
+                    <source>8</source>
                     <encoding>UTF-8</encoding>
                 </configuration>
                 <executions>
