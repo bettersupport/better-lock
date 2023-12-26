@@ -7,7 +7,7 @@
     <groupId>io.github.bettersupport.lock</groupId>
     <artifactId>better-lock</artifactId>
     <packaging>pom</packaging>
-    <version>${revision}</version>
+    <version>1.0.8</version>
     <name>better-lock</name>
     <description>distribute lock</description>
     <url>https://github.com/bettersupport/better-lock.git</url>
@@ -16,10 +16,6 @@
         <module>better-lock-demo</module>
         <module>better-lock-core</module>
     </modules>
-
-    <properties>
-        <revision>1.0.7</revision>
-    </properties>
 
     <dependencyManagement>
         <dependencies>

@@ -5,7 +5,7 @@
     <parent>
         <artifactId>better-lock</artifactId>
         <groupId>io.github.bettersupport.lock</groupId>
-        <version>${revision}</version>
+        <version>1.0.8</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
