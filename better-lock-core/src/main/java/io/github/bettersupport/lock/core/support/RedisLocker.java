@@ -70,7 +70,7 @@ public class RedisLocker implements LockInterface{
         if (!StringUtils.isEmpty(currentValue) && Long.parseLong(currentValue) < System.currentTimeMillis()) {
             String oldValue = redisTemplate.opsForValue().getAndSet(key, value);
             if (!StringUtils.isEmpty(oldValue) && oldValue.equals(currentValue)) {
-                redisTemplate.expire(key, expire, TimeUnit.MILLISECONDS);
+                redisTemplate.opsForValue().set(key, value, expire, TimeUnit.MILLISECONDS);
                 return true;
             }
         }
